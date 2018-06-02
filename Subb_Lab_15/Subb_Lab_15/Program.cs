@@ -134,6 +134,8 @@ namespace Subb_Lab_15
         // Getting all the monarchs' names of the ceratin continent.
         public static void GetMonarchsNames(List<List<State>> earth)
         {
+            Console.Clear();
+
             string continent = ContinentsInput();
 
             // LINQ.
@@ -149,19 +151,21 @@ namespace Subb_Lab_15
                     return state.LeaderName;
                 else return ""; }); });
 
-            Console.Clear();
 
             Console.WriteLine("LINQ");
             foreach (var name in namesLINQ)
                 Console.Write(name.ToString() + " ");
+            Console.WriteLine();
 
             Console.WriteLine("\nLAMBDA");
             foreach (var name in namesLambda)
                 Console.Write(name.ToString() + " ");
+            Console.WriteLine();
 
             Console.WriteLine("\nANONYMOUS");
             foreach (var name in namesAnon)
                 Console.Write(name.ToString() + " ");
+            Console.WriteLine();
 
             Console.WriteLine("\nPress ENTER to continue");
             Console.ReadLine();
@@ -171,6 +175,9 @@ namespace Subb_Lab_15
         // Getting all the states' names of the certain continent.
         public static void GetStates(List<List<State>> earth)
         {
+
+            Console.Clear();
+
             string continent = ContinentsInput();
 
             // LINQ.
@@ -190,19 +197,21 @@ else return "";
 });
             });
 
-            Console.Clear();
 
             Console.WriteLine("LINQ");
             foreach (var name in namesLINQ)
                 Console.Write(name.ToString() + " ");
+            Console.WriteLine();
 
             Console.WriteLine("\nLAMBDA");
             foreach (var name in namesLambda)
                 Console.Write(name.ToString() + " ");
+            Console.WriteLine();
 
             Console.WriteLine("\nANONYMOUS");
             foreach (var name in namesAnon)
                 Console.Write(name.ToString() + " ");
+            Console.WriteLine();
 
             Console.WriteLine("\nPress ENTER to continue");
             Console.ReadLine();
@@ -214,7 +223,7 @@ else return "";
             int n;
             do
             {
-                Console.WriteLine(s);
+                Console.Write(s);
                 ok = Int32.TryParse(Console.ReadLine(), out n);
                 if (!ok || n < 0)
                     Console.WriteLine("Input error! Perhaps you didn't enter a natural number");
@@ -244,7 +253,7 @@ else return "";
         {
             string[] continents = { "Asia", "Africa", "America", "Oceania", "Europe" };
 
-            Console.WriteLine();
+            //Console.WriteLine();
             Console.WriteLine(@"Choose one of the continents:
 1. Asia
 2. Africa
