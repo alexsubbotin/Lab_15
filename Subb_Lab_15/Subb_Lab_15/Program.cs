@@ -32,10 +32,10 @@ namespace Subb_Lab_15
                 switch (choice)
                 {
                     case 1:
-
+                        GetMonarchsNames(earth);
                         break;
                     case 2:
-
+                        GetStates(earth);
                         break;
                     case 3:
 
@@ -131,6 +131,7 @@ namespace Subb_Lab_15
             return earth;
         }
 
+        // Getting all the monarchs' names of the ceratin continent.
         public static void GetMonarchsNames(List<List<State>> earth)
         {
             string continent = ContinentsInput();
@@ -148,17 +149,63 @@ namespace Subb_Lab_15
                     return state.LeaderName;
                 else return null; }); });
 
+            Console.Clear();
+
             Console.WriteLine("LINQ");
             foreach (var name in namesLINQ)
-                Console.Write(name + " ");
+                Console.Write(name.ToString() + " ");
 
             Console.WriteLine("LAMBDA");
             foreach (var name in namesLambda)
-                Console.Write(name + " ");
+                Console.Write(name.ToString() + " ");
 
             Console.WriteLine("ANONYMOUS");
             foreach (var name in namesAnon)
-                Console.Write(name + " ");
+                Console.Write(name.ToString() + " ");
+
+            Console.WriteLine("Press ENTER to continue");
+            Console.ReadLine();
+        }
+
+
+        // Getting all the states' names of the certain continent.
+        public static void GetStates(List<List<State>> earth)
+        {
+            string continent = ContinentsInput();
+
+            // LINQ.
+            var namesLINQ = from list in earth select (from state in list where state.Continent == continent select state.Name);
+
+            // Lamda.
+            var namesLambda = earth.Select(list => list.Where(state => state.Continent == continent).Select(state => state.Name));
+
+            // Anonymous.
+            var namesAnon = earth.Select(delegate (List<State> list) {
+                return list.Select(
+delegate (State state)
+{
+if (state.Continent == continent)
+return state.Name;
+else return null;
+});
+            });
+
+            Console.Clear();
+
+            Console.WriteLine("LINQ");
+            foreach (var name in namesLINQ)
+                Console.Write(name.ToString() + " ");
+
+            Console.WriteLine("LAMBDA");
+            foreach (var name in namesLambda)
+                Console.Write(name.ToString() + " ");
+
+            Console.WriteLine("ANONYMOUS");
+            foreach (var name in namesAnon)
+                Console.Write(name.ToString() + " ");
+
+            Console.WriteLine("Press ENTER to continue");
+            Console.ReadLine();
         }
 
         public static int CountInput(string s)
