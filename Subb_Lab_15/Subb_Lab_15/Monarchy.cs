@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Subb_Lab_14
+namespace Subb_Lab_15
 {
     // Monarchy class (inherits State class)
     class Monarchy : State
