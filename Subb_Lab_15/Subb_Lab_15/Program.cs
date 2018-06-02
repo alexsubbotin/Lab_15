@@ -14,11 +14,23 @@ namespace Subb_Lab_15
             List<List<State>> earth = CreateCollection();
             Console.WriteLine("The list is successfully created!");
 
+            int choice;
             do
             {
+                Console.Clear();
+
                 Console.WriteLine(@"Choose the query:
-1. ")
-            }
+1. All the monarchs of the certain continent
+2. All the states of the certain continent
+3. The population of the certain continent
+4. The average age of the certain continent states
+5. The oldest state of the certain continent
+6. Exit");
+
+                choice = ChoiceInput(6);
+
+
+            } while (choice != 6);
 
         }
 
@@ -114,6 +126,22 @@ namespace Subb_Lab_15
             } while (!ok || n < 0);
 
             return n;
+        }
+
+        // Choice input.
+        public static int ChoiceInput(int size)
+        {
+            bool ok;
+            int choice;
+            do
+            {
+                Console.Write("Enter the number of the chosen option: ");
+                ok = Int32.TryParse(Console.ReadLine(), out choice);
+                if (!ok || choice < 1 || choice > size)
+                    Console.WriteLine("Input error! Perhaps you didn't enter a number from 1 to {0}", size);
+            } while (!ok || choice < 1 || choice > size);
+
+            return choice;
         }
     }
 }
