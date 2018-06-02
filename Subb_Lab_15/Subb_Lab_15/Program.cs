@@ -137,17 +137,17 @@ namespace Subb_Lab_15
             string continent = ContinentsInput();
 
             // LINQ.
-            var namesLINQ = from list in earth select (from state in list where state.Continent == continent select state.LeaderName);
+            var namesLINQ = from list in earth from state in list where state.Continent == continent select state.LeaderName;
 
             // Lamda.
-            var namesLambda = earth.Select(list => list.Where(state => state.Continent == continent).Select(state => state.LeaderName));
+            var namesLambda = earth.SelectMany(list => list.ToArray().Where(state => state.Continent == continent).Select(state => state.LeaderName));
 
             // Anonymous.
-            var namesAnon = earth.Select(delegate (List<State> list) { return list.Select(
+            var namesAnon = earth.SelectMany(delegate (List<State> list) { return list.ToArray().Select(
                 delegate (State state) 
             { if (state.Continent == continent)
                     return state.LeaderName;
-                else return null; }); });
+                else return ""; }); });
 
             Console.Clear();
 
@@ -155,15 +155,15 @@ namespace Subb_Lab_15
             foreach (var name in namesLINQ)
                 Console.Write(name.ToString() + " ");
 
-            Console.WriteLine("LAMBDA");
+            Console.WriteLine("\nLAMBDA");
             foreach (var name in namesLambda)
                 Console.Write(name.ToString() + " ");
 
-            Console.WriteLine("ANONYMOUS");
+            Console.WriteLine("\nANONYMOUS");
             foreach (var name in namesAnon)
                 Console.Write(name.ToString() + " ");
 
-            Console.WriteLine("Press ENTER to continue");
+            Console.WriteLine("\nPress ENTER to continue");
             Console.ReadLine();
         }
 
@@ -174,19 +174,19 @@ namespace Subb_Lab_15
             string continent = ContinentsInput();
 
             // LINQ.
-            var namesLINQ = from list in earth select (from state in list where state.Continent == continent select state.Name);
+            var namesLINQ = from list in earth from state in list where state.Continent == continent select state.Name;
 
             // Lamda.
-            var namesLambda = earth.Select(list => list.Where(state => state.Continent == continent).Select(state => state.Name));
+            var namesLambda = earth.SelectMany(list => list.ToArray().Where(state => state.Continent == continent).Select(state => state.Name));
 
             // Anonymous.
-            var namesAnon = earth.Select(delegate (List<State> list) {
-                return list.Select(
+            var namesAnon = earth.SelectMany(delegate (List<State> list) {
+                return list.ToArray().Select(
 delegate (State state)
 {
 if (state.Continent == continent)
 return state.Name;
-else return null;
+else return "";
 });
             });
 
@@ -196,15 +196,15 @@ else return null;
             foreach (var name in namesLINQ)
                 Console.Write(name.ToString() + " ");
 
-            Console.WriteLine("LAMBDA");
+            Console.WriteLine("\nLAMBDA");
             foreach (var name in namesLambda)
                 Console.Write(name.ToString() + " ");
 
-            Console.WriteLine("ANONYMOUS");
+            Console.WriteLine("\nANONYMOUS");
             foreach (var name in namesAnon)
                 Console.Write(name.ToString() + " ");
 
-            Console.WriteLine("Press ENTER to continue");
+            Console.WriteLine("\nPress ENTER to continue");
             Console.ReadLine();
         }
 
