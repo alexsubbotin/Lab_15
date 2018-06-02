@@ -29,6 +29,24 @@ namespace Subb_Lab_15
 
                 choice = ChoiceInput(6);
 
+                switch (choice)
+                {
+                    case 1:
+
+                        break;
+                    case 2:
+
+                        break;
+                    case 3:
+
+                        break;
+                    case 4:
+
+                        break;
+                    case 5:
+
+                        break;
+                }
 
             } while (choice != 6);
 
@@ -113,6 +131,36 @@ namespace Subb_Lab_15
             return earth;
         }
 
+        public static void GetMonarchsNames(List<List<State>> earth)
+        {
+            string continent = ContinentsInput();
+
+            // LINQ.
+            var namesLINQ = from list in earth select (from state in list where state.Continent == continent select state.LeaderName);
+
+            // Lamda.
+            var namesLambda = earth.Select(list => list.Where(state => state.Continent == continent).Select(state => state.LeaderName));
+
+            // Anonymous.
+            var namesAnon = earth.Select(delegate (List<State> list) { return list.Select(
+                delegate (State state) 
+            { if (state.Continent == continent)
+                    return state.LeaderName;
+                else return null; }); });
+
+            Console.WriteLine("LINQ");
+            foreach (var name in namesLINQ)
+                Console.Write(name + " ");
+
+            Console.WriteLine("LAMBDA");
+            foreach (var name in namesLambda)
+                Console.Write(name + " ");
+
+            Console.WriteLine("ANONYMOUS");
+            foreach (var name in namesAnon)
+                Console.Write(name + " ");
+        }
+
         public static int CountInput(string s)
         {
             bool ok;
@@ -142,6 +190,26 @@ namespace Subb_Lab_15
             } while (!ok || choice < 1 || choice > size);
 
             return choice;
+        }
+
+        // Continents input.
+        public static string ContinentsInput()
+        {
+            string[] continents = { "Asia", "Africa", "America", "Oceania", "Europe" };
+
+            Console.WriteLine();
+            Console.WriteLine(@"Choose one of the continents:
+1. Asia
+2. Africa
+3. America
+4. Oceania
+5. Europe");
+
+            int choice = ChoiceInput(5);
+
+            Console.WriteLine();
+
+            return continents[choice - 1];
         }
     }
 }
