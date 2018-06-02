@@ -41,7 +41,7 @@ namespace Subb_Lab_15
                         GetPopulation(earth);
                         break;
                     case 4:
-
+                        GetAverageAge(earth);
                         break;
                     case 5:
 
@@ -259,6 +259,41 @@ else return "";
             Console.WriteLine("LINQ: " + popLINQ + "\n");
             Console.WriteLine("LAMBDA: " + popLambda + "\n");
             Console.WriteLine("ANONYMOUS: " + popAnon);
+
+            Console.WriteLine("\nPress ENTER to continue");
+            Console.ReadLine();
+        }
+
+        // The average age
+        public static void GetAverageAge(List<List<State>> earth)
+        {
+            Console.Clear();
+
+            string continent = ContinentsInput();
+
+            // LINQ
+            double ageLINQ = (from list in earth from state in list where state.Continent == continent select state.Age).Average();
+
+            // LAMBDA
+            double ageLambda = earth.Average(list => list.ToArray().Where(state => state.Continent == continent).Average(state => state.Age));
+
+            // ANONYMOUS
+            double ageAnon = earth.Average(
+                delegate (List<State> list)
+            {
+                list.ToArray().Average(delegate (State state)
+                {
+                    if (state.Continent == continent)
+                        return state.Age;
+                    else
+                        return null;
+                });
+                return default(double);
+            });
+
+            Console.WriteLine("LINQ: " + ageLINQ + "\n");
+            Console.WriteLine("LAMBDA: " + ageLambda + "\n");
+            Console.WriteLine("ANONYMOUS: " + ageAnon);
 
             Console.WriteLine("\nPress ENTER to continue");
             Console.ReadLine();
