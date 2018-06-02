@@ -38,7 +38,7 @@ namespace Subb_Lab_15
                         GetStates(earth);
                         break;
                     case 3:
-
+                        GetPopulation(earth);
                         break;
                     case 4:
 
@@ -64,7 +64,7 @@ namespace Subb_Lab_15
 
             // List of the african countries.
             List<State> africaList = new List<State>();
-            for(int i = 0; i < africaCount; i++)
+            for (int i = 0; i < africaCount; i++)
             {
                 // Creating a random element.
                 Monarchy monarchy = Monarchy.Generate(i);
@@ -145,11 +145,16 @@ namespace Subb_Lab_15
             var namesLambda = earth.SelectMany(list => list.ToArray().Where(state => state.Continent == continent).Select(state => state.LeaderName));
 
             // Anonymous.
-            var namesAnon = earth.SelectMany(delegate (List<State> list) { return list.ToArray().Select(
-                delegate (State state) 
-            { if (state.Continent == continent)
-                    return state.LeaderName;
-                else return ""; }); });
+            var namesAnon = earth.SelectMany(delegate (List<State> list)
+            {
+                return list.ToArray().Select(
+delegate (State state)
+{
+if (state.Continent == continent)
+return state.LeaderName;
+else return "";
+});
+            });
 
 
             Console.WriteLine("LINQ");
@@ -187,14 +192,15 @@ namespace Subb_Lab_15
             var namesLambda = earth.SelectMany(list => list.ToArray().Where(state => state.Continent == continent).Select(state => state.Name));
 
             // Anonymous.
-            var namesAnon = earth.SelectMany(delegate (List<State> list) {
+            var namesAnon = earth.SelectMany(delegate (List<State> list)
+            {
                 return list.ToArray().Select(
-delegate (State state)
-{
-if (state.Continent == continent)
-return state.Name;
-else return "";
-});
+                    delegate (State state)
+                    {
+                        if (state.Continent == continent)
+                            return state.Name;
+                        else return "";
+                    });
             });
 
 
@@ -212,6 +218,47 @@ else return "";
             foreach (var name in namesAnon)
                 Console.Write(name.ToString() + " ");
             Console.WriteLine();
+
+            Console.WriteLine("\nPress ENTER to continue");
+            Console.ReadLine();
+        }
+
+        // Getting the population of the certain continent
+        public static void GetPopulation(List<List<State>> earth)
+        {
+            Console.Clear();
+
+            string continent = ContinentsInput();
+
+            // LINQ
+            int popLINQ = (from list in earth from state in list where state.Continent == continent select state.Population).Sum();
+
+            // LAMBDA
+            int popLambda = 0;
+            var pop = earth.SelectMany(list => list.ToArray().Where(state => state.Continent == continent).Select(a => a.Population));
+            foreach (var a in pop)
+                popLambda += (int)a;
+            //int popL = earth.Aggregate(list => list.ToArray().Where(state => state.Continent == continent).Select(state => state.Population).Aggregate<int>((a, b) => a + b));
+
+            // ANONYMOUS
+            int popAnon = 0;
+            pop = earth.SelectMany(delegate (List<State> list)
+            {
+                return list.ToArray().Select(
+                    delegate (State state)
+                    {
+                        if (state.Continent == continent)
+                            return state.Population;
+                        else
+                            return 0;
+                    });
+            });
+            foreach (var a in pop)
+                popAnon += (int)a;
+
+            Console.WriteLine("LINQ: " + popLINQ + "\n");
+            Console.WriteLine("LAMBDA: " + popLambda + "\n");
+            Console.WriteLine("ANONYMOUS: " + popAnon);
 
             Console.WriteLine("\nPress ENTER to continue");
             Console.ReadLine();
