@@ -20,35 +20,39 @@ namespace Subb_Lab_15
                 Console.Clear();
 
                 Console.WriteLine(@"Choose the query:
-1. All the monarchs of the certain continent
-2. All the states of the certain continent
-3. The population of the certain continent
-4. The average age of the certain continent states
-5. The oldest state of the certain continent
-6. Exit");
+1. Show the collection
+2. All the monarchs of the certain continent
+3. All the states of the certain continent
+4. The population of the certain continent
+5. The average age of the certain continent states
+6. The maximum state age of the certain continent
+7. Exit");
 
-                choice = ChoiceInput(6);
+                choice = ChoiceInput(7);
 
                 switch (choice)
                 {
                     case 1:
-                        GetMonarchsNames(earth);
+                        ShowColl(earth);
                         break;
                     case 2:
-                        GetStates(earth);
+                        GetMonarchsNames(earth);
                         break;
                     case 3:
-                        GetPopulation(earth);
+                        GetStates(earth);
                         break;
                     case 4:
-                        GetAverageAge(earth);
+                        GetPopulation(earth);
                         break;
                     case 5:
-
+                        GetAverageAge(earth);
+                        break;
+                    case 6:
+                        GetTheOldest(earth);
                         break;
                 }
 
-            } while (choice != 6);
+            } while (choice != 7);
 
         }
 
@@ -275,25 +279,69 @@ else return "";
             double ageLINQ = (from list in earth from state in list where state.Continent == continent select state.Age).Average();
 
             // LAMBDA
-            double ageLambda = earth.Average(list => list.ToArray().Where(state => state.Continent == continent).Average(state => state.Age));
+            double ageLambda = (earth.SelectMany(list => list.ToArray().Where(state => state.Continent == continent).Select(state => state.Age))).Average();
 
             // ANONYMOUS
-            double ageAnon = earth.Average(
+            double ageAnon = (earth.SelectMany(
                 delegate (List<State> list)
             {
-                list.ToArray().Average(delegate (State state)
+                return list.ToArray().Select(delegate (State state)
                 {
                     if (state.Continent == continent)
                         return state.Age;
                     else
-                        return null;
+                        return default(int);
                 });
-                return default(double);
-            });
+            })).Average();
 
             Console.WriteLine("LINQ: " + ageLINQ + "\n");
             Console.WriteLine("LAMBDA: " + ageLambda + "\n");
             Console.WriteLine("ANONYMOUS: " + ageAnon);
+
+            Console.WriteLine("\nPress ENTER to continue");
+            Console.ReadLine();
+        }
+
+        // The oldest country
+        public static void GetTheOldest(List<List<State>> earth)
+        {
+            Console.Clear();
+
+            string continent = ContinentsInput();
+
+            // LINQ
+            int oldLINQ = (from list in earth from state in list where state.Continent == continent select state.Age).Max();
+
+            // LAMBDA
+            int oldLambda = (earth.SelectMany(list => list.ToArray().Where(state => state.Continent == continent).Select(state => state.Age))).Max();
+
+            // ANONYMOUS
+            int oldAnon = (earth.SelectMany(delegate (List<State> list)
+            {
+                return list.ToArray().Select(delegate (State state)
+                {
+                    if (state.Continent == continent)
+                        return state.Age;
+                    else
+                        return 0;
+                });
+            })).Max();
+
+            Console.WriteLine("LINQ: " + oldLINQ + "\n");
+            Console.WriteLine("LAMBDA: " + oldLambda + "\n");
+            Console.WriteLine("ANONYMOUS: " + oldAnon);
+
+            Console.WriteLine("\nPress ENTER to continue");
+            Console.ReadLine();
+        }
+
+        // Show collection.
+        public static void ShowColl(List<List<State>> earth)
+        {
+            Console.Clear();
+            foreach (List<State> list in earth)
+                foreach (State state in list)
+                    state.Show();
 
             Console.WriteLine("\nPress ENTER to continue");
             Console.ReadLine();
