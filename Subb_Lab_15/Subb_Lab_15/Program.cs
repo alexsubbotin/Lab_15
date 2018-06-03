@@ -154,9 +154,9 @@ namespace Subb_Lab_15
                 return list.ToArray().Select(
 delegate (State state)
 {
-if (state.Continent == continent)
-return state.LeaderName;
-else return "";
+    if (state.Continent == continent)
+        return state.LeaderName;
+    else return "";
 });
             });
 
@@ -282,17 +282,29 @@ else return "";
             double ageLambda = (earth.SelectMany(list => list.ToArray().Where(state => state.Continent == continent).Select(state => state.Age))).Average();
 
             // ANONYMOUS
-            double ageAnon = (earth.SelectMany(
+            //double ageAnon = (earth.SelectMany(
+            //    delegate (List<State> list)
+            //{
+            //    return list.ToArray().Select(delegate (State state)
+            //    {
+            //        if (state.Continent == continent)
+            //            return state.Age;
+            //        else
+            //            return default(int);
+            //    });
+            //})).Average();
+
+            double ageAnon = earth.Average(
                 delegate (List<State> list)
-            {
-                return list.ToArray().Select(delegate (State state)
                 {
-                    if (state.Continent == continent)
-                        return state.Age;
-                    else
-                        return default(int);
+                    return list.ToArray().Average(delegate (State state)
+                    {
+                        if (state.Continent == continent)
+                            return state.Age;
+                        else
+                            return default(int);
+                    });
                 });
-            })).Average();
 
             Console.WriteLine("LINQ: " + ageLINQ + "\n");
             Console.WriteLine("LAMBDA: " + ageLambda + "\n");
